@@ -7,10 +7,12 @@ class Webcam:
         self.cap = None
 
     def __enter__(self):
-        self.cap = cv2.VideoCapture(self.index, cv2.CAP_DSHOW)
+        self.cap = cv2.VideoCapture(self.index, cv2.CAP_MSMF)
         if not self.cap.isOpened():
             self.cap.release()
             raise RuntimeError(f"Could not open camera {self.index}")
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         return self
 
     def read(self):
