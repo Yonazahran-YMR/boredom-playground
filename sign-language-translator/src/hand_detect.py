@@ -44,7 +44,9 @@ with vision.HandLandmarker.create_from_options(options) as landmarker, \
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
         timestamp_ms = int((time.perf_counter() - start) * 1000)
+        t0 = time.perf_counter()
         result = landmarker.detect_for_video(mp_image, timestamp_ms)
+        detect_ms = (time.perf_counter() - t0) * 1000
 
         if result.hand_landmarks:
             lms = result.hand_landmarks[0]  # 21 landmarks of the first hand
@@ -60,8 +62,9 @@ with vision.HandLandmarker.create_from_options(options) as landmarker, \
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 255), 1)
 
             hand = result.handedness[0][0]
+            label = "Right" if hand.category_name == "Left" else "Left"  # swapped: we feed a mirrored image
             tip = lms[8]  # index fingertip
-            cv2.putText(frame, f"{hand.category_name} hand ({hand.score:.2f})", (10, 30),
+            cv2.putText(frame, f"{label} hand ({hand.score:.2f})", (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
             cv2.putText(frame, f"index tip x={tip.x:.2f} y={tip.y:.2f} z={tip.z:.2f}",
                         (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
@@ -72,8 +75,8 @@ with vision.HandLandmarker.create_from_options(options) as landmarker, \
         now = time.perf_counter()
         fps = 0.9 * fps + 0.1 * (1 / max(now - prev, 1e-6))
         prev = now
-        cv2.putText(frame, f"FPS: {fps:.0f}   n = numbers   q = quit", (10, h - 15),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+        cv2.putText(frame, f"FPS: {fps:.0f}  detect: {detect_ms:.0f} ms   n = numbers   q = quit",
+                (10, h - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
 
         cv2.imshow("Hand detection", frame)
         key = cv2.waitKey(1) & 0xFF
