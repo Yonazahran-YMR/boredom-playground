@@ -27,3 +27,11 @@ Normalizing means subtracting the wrist and dividing by hand size. That's suppos
 Things that tripped me up: the handedness label was swapped because my feed is mirrored (fixed by swapping the label in HandDetector), and I ran a script from the repo root instead of the project folder.
 
 Not solved yet: normalizing doesn't remove rotation. I want to see in Phase 3 whether tilting my hand breaks things.
+
+## Phase 3: Rule based finger counting
+
+Counted fingers by comparing how far the tip is from the wrist versus the middle joint. Straight fingers gave a ratio around 1.3. It works in clean poses and fails at certain angles: the thumb flips a lot, a pointing finger flickers because it's seen end on, and sideways or O shaped hands read 1 to 4.
+
+Tried hysteresis (two thresholds so it doesn't flicker at the edge). It helped with flicker but not with the real problem. When I lowered the thresholds to 1.1 and 0.9, curled ring and pinky fingers started reading as up, so I put them back at 1.2 and 1.0.
+
+This clicked for me: the straight and curled values overlap, so no single cutoff separates them. One hand made number per finger throws away most of the 21 landmarks. That's why a trained model should do better, and it's the reason Phase 4 exists.
