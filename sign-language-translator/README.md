@@ -10,7 +10,7 @@ I'm building this in stages on purpose. Recognizing a static hand pose (a letter
 
 
 
-\## Status
+## Status
 
 
 
@@ -46,7 +46,7 @@ My webcam is camera index 1, set in the scripts. The camera code uses the MSMF b
 
 
 
-\## What it can't do (yet)
+## What it can't do (yet)
 
 
 
@@ -54,17 +54,16 @@ Everything beyond drawing a hand skeleton. I'll keep this section honest as it g
 
 
 
-\## Notes
+## Notes
 
 
 
 Experiment notes and things that tripped me up live in `notes/`.
 
-'@ | Set-Content README.md -Encoding utf8
 
 
 
-\# Phase 1: Webcam
+# Phase 1: Webcam
 
 
 
@@ -72,7 +71,7 @@ Got the camera working with OpenCV. A frame is just a NumPy array of shape (heig
 
 
 
-\## What clicked for me
+## What clicked for me
 
 
 
@@ -80,7 +79,7 @@ The `with` block thing: `\_\_exit\_\_` always runs, so the camera gets released 
 
 
 
-\## Things that tripped me up
+## Things that tripped me up
 
 
 
@@ -100,21 +99,17 @@ The camera ran at 10 FPS no matter what I did to lighting or format. I wrote a p
 
 
 
-\## Not done yet
+## Not done yet
 
 
 
 Camera selection (the dropdown in my UI mockup) is postponed to Phase 9. Right now the index is hardcoded.
 
-'@ | Set-Content notes\\phase1-webcam.md -Encoding utf8
 
 
 
-@'
 
-
-
-\# Phase 2: Hand detection
+# Phase 2: Hand detection
 
 
 
@@ -122,7 +117,7 @@ MediaPipe finds 21 points on a hand. First a palm detector finds the palm, then 
 
 
 
-\## What clicked for me
+## What clicked for me
 
 
 
@@ -134,7 +129,7 @@ Normalizing means subtracting the wrist and dividing by hand size. That should m
 
 
 
-\## Things that tripped me up
+## Things that tripped me up
 
 
 
@@ -146,13 +141,11 @@ Ran a script from the repo root instead of the project folder and got a file not
 
 
 
-\## Not solved yet
+## Not solved yet
 
 
 
 Normalizing removes position and size but not rotation. I want to see in Phase 3 whether tilting my hand breaks things.
-
-'@ | Set-Content notes\\phase2-hands.md -Encoding utf8
 
 
 
