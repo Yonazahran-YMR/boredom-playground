@@ -2,7 +2,7 @@
 
 
 
-A webcam app that reads hand signs and turns them into text. Part of my boredom-playground repo.
+A webcam app that reads hand signs and turns them into text.
 
 
 
